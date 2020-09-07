@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:enganchaunmichi/src/providers/cats_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddCatPage extends StatefulWidget {
   @override
@@ -14,23 +16,41 @@ class _AddCatPageState extends State<AddCatPage> {
 
   CatModel cat = new CatModel();
   final catsProvider = new CatsProvider();
+  final _picker = ImagePicker();
+  File pic;
 
   String _selectedOption = "Macho";
+  String _barTitle = "Añadir gato";
+  String _button = "GUARDAR";
+  bool _isVisible = false;
 
   @override
   Widget build(BuildContext context) {
+
+    final CatModel catData = ModalRoute.of(context).settings.arguments;
+    if (catData != null) {
+      cat = catData;
+      _selectedOption = cat.gender;
+    }
+
+    if (cat.id != null) {
+      _barTitle = "Editar gato";
+      _button = "ACTUALIZAR";
+      _isVisible = true;
+    }
+
     return Scaffold(
       key: scaffoldKey  ,
       appBar: AppBar(
-        title: Text("Añadir gato"),
+        title: Text(_barTitle),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.photo_size_select_actual),
-            onPressed: () {},
+            onPressed: _selectPic,
           ),
           IconButton(
             icon: Icon(Icons.camera_alt),
-            onPressed: () {},
+            onPressed: _takePic,
           )
         ],
       ),
@@ -41,13 +61,16 @@ class _AddCatPageState extends State<AddCatPage> {
             key: formKey,
             child: Column(
               children: <Widget>[
+                _showPic(),
                 _createName(),
                 SizedBox(height: 10.0),
                 _createGender(),
                 _createAge(),
                 _createDesc(),
                 SizedBox(height: 30.0),
-                _createButton()
+                _createButton(),
+                SizedBox(height: 20.0),
+                _createDeleteButton(cat)
               ],
             ),
           ),
@@ -133,7 +156,7 @@ class _AddCatPageState extends State<AddCatPage> {
     return RaisedButton(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-        child: Text("GUARDAR"),
+        child: Text(_button),
       ),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0)
@@ -144,17 +167,95 @@ class _AddCatPageState extends State<AddCatPage> {
     );
   }
 
-  void _submit() {
+  Widget _createDeleteButton(CatModel cat) {
+    return Visibility(
+        visible: _isVisible,
+        child: RaisedButton(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 95.0, vertical: 15.0),
+            child: Text("BORRAR"),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0)
+          ),
+          color: Colors.red,
+          textColor: Colors.white,
+          onPressed: () {
+            catsProvider.deleteCat(cat.id);
+            showSnackbar("Gato borrado con éxito.");
+            Navigator.pop(context);
+          },
+        )
+    );
+  }
+
+  void _submit() async {
     if ( !formKey.currentState.validate() ) return;
     formKey.currentState.save();
 
-    print(cat.name);
-    print(cat.gender);
-    print(cat.age);
-    print(cat.desc);
+    if (pic != null) {
+      cat.pictureUrl = await catsProvider.uploadImage(pic);
+    }
 
-    catsProvider.createCat(cat);
+    if (cat.id == null) {
+      catsProvider.createCat(cat);
+    } else {
+      catsProvider.updateCat(cat);
+    }
 
+    showSnackbar("Gato guardado con éxito.");
+    Navigator.pop(context);
+  }
+
+  void showSnackbar(String msg) {
+    final snackbar = SnackBar(
+      content: Text(msg),
+      duration: Duration(milliseconds: 1500),
+    );
+
+    scaffoldKey.currentState.showSnackBar(snackbar);
+  }
+
+  Widget _showPic() {
+    if (cat.pictureUrl != null) {
+      return FadeInImage(
+        image: NetworkImage(cat.pictureUrl),
+        placeholder: AssetImage('assets/loading.gif'),
+        fit: BoxFit.cover,
+        height: 300.0,
+      );
+    } else {
+      if( pic != null ){
+        return Image.file(
+          pic,
+          fit: BoxFit.cover,
+          height: 300.0,
+        );
+      }
+      return Image.asset('assets/no-image.png');
+    }
+  }
+
+  _selectPic() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    pic = File(pickedFile.path);
+
+    if (pic != null) {
+      cat.pictureUrl = null;
+    }
+
+    setState(() {});
+  }
+
+  _takePic() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+    pic = File(pickedFile.path);
+
+    if (pic != null) {
+      cat.pictureUrl = null;
+    }
+
+    setState(() {});
   }
 
 }

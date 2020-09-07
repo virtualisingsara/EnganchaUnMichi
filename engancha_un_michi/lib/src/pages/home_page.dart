@@ -12,7 +12,8 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Gatos"),
       ),
-      body: _createList(),
+      body:
+      _createList(),
       floatingActionButton: _createButton(context),
     );
   }
@@ -38,20 +39,23 @@ class HomePage extends StatelessWidget {
 
   Widget _createItem(BuildContext context, CatModel cat) {
     final card = InkWell(
-        //onTap: () => Navigator.pushNamed(context, "add_cat"),
+        onTap: () => Navigator.pushNamed(context, "add_cat", arguments: cat),
         child: Container(
           color: Colors.deepPurple,
           child: Column(
             children: <Widget>[
-              FadeInImage(
-                  image: NetworkImage(
-                      "https://26uepavkh8yx35d834o3oay1-wpengine.netdna-ssl.com/wp-content/uploads/2019/05/GrumpCrop.jpg"),
-                  placeholder: NetworkImage(
-                      "https://i.pinimg.com/originals/4e/40/dd/4e40ddd11beb9ba671a0b59948861afb.png"),
-                  fadeInDuration: Duration(milliseconds: 200),
-                  height: 100.0,
-                  width: double.infinity,
-                  fit: BoxFit.cover
+              (cat.pictureUrl == null)
+                  ? Image(image: AssetImage('assets/no-image.png'),
+                    height: 100.0,
+                    width: double.infinity,
+                    fit: BoxFit.cover,)
+                  : FadeInImage(
+                    image: NetworkImage(cat.pictureUrl),
+                    placeholder: AssetImage('assets/loading.gif'),
+                    fadeInDuration: Duration(milliseconds: 200),
+                    height: 100.0,
+                    width: double.infinity,
+                    fit: BoxFit.cover
               ),
               Container(
                 padding: EdgeInsets.all(5.0),

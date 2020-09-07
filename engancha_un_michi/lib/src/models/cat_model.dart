@@ -35,7 +35,7 @@ class CatModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    //"id": id,
     "name": name,
     "gender": gender,
     "age": age,
