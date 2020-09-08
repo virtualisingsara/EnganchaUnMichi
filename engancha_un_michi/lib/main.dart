@@ -1,9 +1,15 @@
 import 'package:enganchaunmichi/src/pages/home_page.dart';
 import 'package:enganchaunmichi/src/pages/add_cat_page.dart';
 import 'package:enganchaunmichi/src/pages/login_page.dart';
+import 'package:enganchaunmichi/src/pages/register_page.dart';
+import 'package:enganchaunmichi/src/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(MyApp());
+  final prefs = new UserPreferences();
+  await prefs.initPrefs();
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -14,6 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "login",
       routes: {
         "login" : (BuildContext context) => LoginPage(),
+        "register" : (BuildContext context) => RegisterPage(),
         "home" : (BuildContext context) => HomePage(),
         "add_cat" : (BuildContext context) => AddCatPage(),
       },

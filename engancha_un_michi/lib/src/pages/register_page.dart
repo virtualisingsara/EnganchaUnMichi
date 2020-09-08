@@ -1,16 +1,19 @@
+import 'package:enganchaunmichi/src/models/user_model.dart';
 import 'package:enganchaunmichi/src/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
 
+  UserModel user = new UserModel();
   final usersProvider = new UsersProvider();
   String _email;
   String _password;
+  String _selectedOption = "adopter";
 
   @override
   Widget build(BuildContext context) {
@@ -52,19 +55,21 @@ class _LoginPageState extends State<LoginPage> {
             ),
             child: Column(
               children: <Widget>[
-                Text("Iniciar sesión", style: TextStyle(fontSize: 20.0)),
+                Text("Registrarse", style: TextStyle(fontSize: 20.0)),
                 SizedBox(height: 10.0),
                 _createEmail(),
                 SizedBox(height: 10.0),
                 _createPassword(),
+                SizedBox(height: 30.0),
+                _createTypeAccount(),
                 SizedBox(height: 30.0),
                 _createButton(context)
               ],
             ),
           ),
           FlatButton(
-            child: Text("Registrarse", style: TextStyle(color: Colors.deepPurple)),
-            onPressed: () => Navigator.pushReplacementNamed(context, "register"),
+            child: Text("Volver a iniciar sesión", style: TextStyle(color: Colors.deepPurple)),
+            onPressed: () => Navigator.pushReplacementNamed(context, "login"),
           ),
           SizedBox(height: 100.0)
         ],
@@ -106,6 +111,44 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _createTypeAccount() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      height: 70.0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text("Tipo de cuenta", style: TextStyle(fontSize: 16.5, color: Color.fromRGBO(104, 104, 104, 1))),
+          SizedBox(width: 30.0),
+          Expanded(
+              child: DropdownButton(
+                value: _selectedOption,
+                items: getOptionsDropdown(),
+                onChanged: (opt) {
+                  setState(() {
+                    _selectedOption = opt;
+                  });
+                },
+              )
+          )
+        ],
+      )
+    );
+  }
+
+  List<DropdownMenuItem<String>> getOptionsDropdown() {
+    List<DropdownMenuItem<String>> list = new List();
+    list.add(DropdownMenuItem(
+        child: Text("Quiero adoptar"),
+        value: "adopter"
+    ));
+    list.add(DropdownMenuItem(
+        child: Text("Quiero dar en adopción"),
+        value: "giver"
+    ));
+    return list;
+  }
+
   Widget _createButton(BuildContext context) {
     return RaisedButton(
       child: Container(
@@ -117,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
       color: Colors.deepPurple,
       textColor: Colors.white,
-      onPressed: () => _login(context),
+      onPressed: () => _register(context),
     );
   }
 
@@ -143,33 +186,36 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _login(BuildContext context) async {
-    Map info = await usersProvider.login(_email, _password);
+  _register(BuildContext context) async {
+    Map info = await usersProvider.register(_email, _password);
     if ( info['ok'] ) {
+      user.email = _email;
+      user.accountType = _selectedOption;
+      usersProvider.createUser(user);
       Navigator.pushReplacementNamed(context, "home");
     } else {
-      _showAlert(context);
+      _showAlert(context, info['message']);
     }
   }
 
-  _showAlert(BuildContext context) {
+  _showAlert(BuildContext context, String message) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Error", style: TextStyle(color: Colors.red)),
-          content: Text("El usuario y/o la contraseña son incorrectos", style: TextStyle(color: Colors.red)),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        );
-      }
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Error", style: TextStyle(color: Colors.red)),
+            content: Text(message, style: TextStyle(color: Colors.red)),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+          );
+        }
     );
   }
 

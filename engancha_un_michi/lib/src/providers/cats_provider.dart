@@ -6,10 +6,10 @@ import 'package:mime_type/mime_type.dart';
 import 'package:enganchaunmichi/src/models/cat_model.dart';
 
 class CatsProvider {
-  final String _url = "https://engancha-un-michi.firebaseio.com";
+  final String _url = 'https://engancha-un-michi.firebaseio.com';
 
   Future<bool> createCat(CatModel cat) async {
-    final url = "$_url/cats.json";
+    final url = '$_url/cats.json';
     final response = await http.post(url, body: catModelToJson(cat));
     final decodedData = json.decode(response.body);
 
