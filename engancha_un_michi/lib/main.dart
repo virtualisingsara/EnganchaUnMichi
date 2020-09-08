@@ -1,4 +1,5 @@
-import 'package:enganchaunmichi/src/pages/home_page.dart';
+import 'package:enganchaunmichi/src/pages/adopter_home_page.dart';
+import 'package:enganchaunmichi/src/pages/giver_home_page.dart';
 import 'package:enganchaunmichi/src/pages/add_cat_page.dart';
 import 'package:enganchaunmichi/src/pages/login_page.dart';
 import 'package:enganchaunmichi/src/pages/register_page.dart';
@@ -21,7 +22,8 @@ class MyApp extends StatelessWidget {
       routes: {
         "login" : (BuildContext context) => LoginPage(),
         "register" : (BuildContext context) => RegisterPage(),
-        "home" : (BuildContext context) => HomePage(),
+        "adopterHome" : (BuildContext context) => AdopterHomePage(),
+        "giverHome" : (BuildContext context) => GiverHomePage(),
         "add_cat" : (BuildContext context) => AddCatPage(),
       },
       theme: ThemeData(

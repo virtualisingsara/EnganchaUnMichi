@@ -192,7 +192,11 @@ class _RegisterPageState extends State<RegisterPage> {
       user.email = _email;
       user.accountType = _selectedOption;
       usersProvider.createUser(user);
-      Navigator.pushReplacementNamed(context, "home");
+      if ( _selectedOption == "giver" ) {
+        Navigator.pushReplacementNamed(context, "giverHome");
+      } else {
+        Navigator.pushReplacementNamed(context, "adopterHome");
+      }
     } else {
       _showAlert(context, info['message']);
     }

@@ -146,7 +146,14 @@ class _LoginPageState extends State<LoginPage> {
   _login(BuildContext context) async {
     Map info = await usersProvider.login(_email, _password);
     if ( info['ok'] ) {
-      Navigator.pushReplacementNamed(context, "home");
+      var users = await usersProvider.readUsers();
+      var usersMap = Map.fromIterable(users, key: (e) => e.email, value: (e) => e.accountType);
+      var accountType = usersMap[_email];
+      if ( accountType == "giver" ) {
+        Navigator.pushReplacementNamed(context, "giverHome");
+      } else {
+        Navigator.pushReplacementNamed(context, "adopterHome");
+      }
     } else {
       _showAlert(context);
     }

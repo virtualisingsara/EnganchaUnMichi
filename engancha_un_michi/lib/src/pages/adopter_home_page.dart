@@ -2,19 +2,18 @@ import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:enganchaunmichi/src/providers/cats_provider.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class AdopterHomePage extends StatelessWidget {
 
   final catsProvider = new CatsProvider();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gatos"),
+        title: Text("Gatos (adopter)"),
       ),
       body:
       _createList(),
-      floatingActionButton: _createButton(context),
     );
   }
 
@@ -39,23 +38,23 @@ class HomePage extends StatelessWidget {
 
   Widget _createItem(BuildContext context, CatModel cat) {
     final card = InkWell(
-        onTap: () => Navigator.pushNamed(context, "add_cat", arguments: cat),
+        //onTap: () => Navigator.pushNamed(context, "add_cat", arguments: cat),
         child: Container(
           color: Colors.deepPurple,
           child: Column(
             children: <Widget>[
               (cat.pictureUrl == null)
                   ? Image(image: AssetImage('assets/no-image.png'),
-                    height: 100.0,
-                    width: double.infinity,
-                    fit: BoxFit.cover,)
+                height: 100.0,
+                width: double.infinity,
+                fit: BoxFit.cover,)
                   : FadeInImage(
-                    image: NetworkImage(cat.pictureUrl),
-                    placeholder: AssetImage('assets/loading.gif'),
-                    fadeInDuration: Duration(milliseconds: 200),
-                    height: 100.0,
-                    width: double.infinity,
-                    fit: BoxFit.cover
+                  image: NetworkImage(cat.pictureUrl),
+                  placeholder: AssetImage('assets/loading.gif'),
+                  fadeInDuration: Duration(milliseconds: 200),
+                  height: 100.0,
+                  width: double.infinity,
+                  fit: BoxFit.cover
               ),
               Container(
                 padding: EdgeInsets.all(5.0),
@@ -92,14 +91,6 @@ class HomePage extends StatelessWidget {
       ),
     );
 
-  }
-
-  _createButton(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
-      backgroundColor: Colors.deepPurple,
-      onPressed: () => Navigator.pushNamed(context, "add_cat"),
-    );
   }
 
 }

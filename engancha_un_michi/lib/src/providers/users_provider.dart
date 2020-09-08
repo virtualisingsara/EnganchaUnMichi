@@ -11,9 +11,9 @@ class UsersProvider {
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     final authData = {
-      'email' : email,
-      'password' : password,
-      'returnSecureToken' : true
+      'email': email,
+      'password': password,
+      'returnSecureToken': true
     };
 
     final response = await http.post(
@@ -27,22 +27,22 @@ class UsersProvider {
 
     if (decodedResponse.containsKey('idToken')) {
       _prefs.token = decodedResponse['idToken'];
-      return { 'ok': true, 'token': decodedResponse['idToken'] };
+      return { 'ok': true, 'token': decodedResponse['idToken']};
     } else {
-      return { 'ok': false, 'message': decodedResponse['error']['message'] };
+      return { 'ok': false, 'message': decodedResponse['error']['message']};
     }
   }
 
   Future<Map<String, dynamic>> register(String email, String password) async {
     final authData = {
-      'email' : email,
-      'password' : password,
-      'returnSecureToken' : true
+      'email': email,
+      'password': password,
+      'returnSecureToken': true
     };
 
     final response = await http.post(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_firebaseKey',
-      body: json.encode(authData)
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_firebaseKey',
+        body: json.encode(authData)
     );
 
     Map<String, dynamic> decodedResponse = json.decode(response.body);
@@ -51,9 +51,9 @@ class UsersProvider {
 
     if (decodedResponse.containsKey('idToken')) {
       _prefs.token = decodedResponse['idToken'];
-      return { 'ok': true, 'token': decodedResponse['idToken'] };
+      return { 'ok': true, 'token': decodedResponse['idToken']};
     } else {
-      return { 'ok': false, 'message': decodedResponse['error']['message'] };
+      return { 'ok': false, 'message': decodedResponse['error']['message']};
     }
   }
 
@@ -67,6 +67,21 @@ class UsersProvider {
     return true;
   }
 
-  //TODO readUser()
+  Future<List<UserModel>> readUsers() async {
+    final url = '$_url/users.json';
+    final response = await http.get(url);
+    final Map<String, dynamic> decodedData = json.decode(response.body);
+    final List<UserModel> users = new List();
+
+    if (decodedData == null) return [];
+
+    decodedData.forEach((id, user) {
+      final userTemp = UserModel.fromJson(user);
+      userTemp.id = id;
+      users.add(userTemp);
+    });
+
+    return users;
+  }
 
 }
