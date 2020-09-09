@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -31,6 +32,32 @@ class CatsProvider {
       catTemp.id = id;
       cats.add(catTemp);
     });
+
+    return cats;
+  }
+
+  Future<CatModel> searchCatById(String id) async {
+    final url = '$_url/cats/$id.json';
+    final response = await http.get(url);
+    final Map<String, dynamic> decodedData = json.decode(response.body);
+
+    if (decodedData == null) return new CatModel();
+
+    CatModel cat = CatModel.fromJson(decodedData);
+
+    print("SEARCH CAT - " + cat.toString());
+
+    return cat;
+}
+
+  Future<List<CatModel>> searchCatsByIds(Future<List<String>> idList) async{
+    final List<String> ids = await idList;
+    final List<CatModel> cats = new List();
+    for (var i = 0; i < ids.length; i++) {
+      cats.add(await searchCatById(ids[i]));
+    }
+
+    print("SEARCH CATS - " + cats.toString());
 
     return cats;
   }

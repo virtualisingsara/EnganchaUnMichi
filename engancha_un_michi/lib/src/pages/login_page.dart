@@ -152,7 +152,7 @@ class _LoginPageState extends State<LoginPage> {
       if ( accountType == "giver" ) {
         Navigator.pushReplacementNamed(context, "giverHome");
       } else {
-        Navigator.pushReplacementNamed(context, "adopterHome");
+        Navigator.pushReplacementNamed(context, "adopterHome", arguments: _email);
       }
     } else {
       _showAlert(context);

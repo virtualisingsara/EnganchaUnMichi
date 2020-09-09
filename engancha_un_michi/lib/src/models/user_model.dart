@@ -13,21 +13,25 @@ class UserModel {
     this.id,
     this.email = "",
     this.accountType = "adopter",
+    this.favs,
   });
 
   String id;
   String email;
   String accountType;
+  List<String> favs;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     id: json["id"],
     email: json["email"],
     accountType: json["accountType"],
+    favs: json["favs"] == null ? null : List<String>.from(json["favs"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
     //"id": id,
     "email": email,
     "accountType": accountType,
+    "favs": favs == null ? null : List<dynamic>.from(favs.map((x) => x)),
   };
 }

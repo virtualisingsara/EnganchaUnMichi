@@ -1,16 +1,20 @@
 import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:enganchaunmichi/src/providers/cats_provider.dart';
+import 'package:enganchaunmichi/src/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 
-class AdopterHomePage extends StatefulWidget {
+class FavoritesPage extends StatefulWidget {
   @override
-  _AdopterHomePageState createState() => _AdopterHomePageState();
+  _FavoritesPageState createState() => _FavoritesPageState();
 }
 
-class _AdopterHomePageState extends State<AdopterHomePage> {
+class _FavoritesPageState extends State<FavoritesPage> {
 
   final catsProvider = new CatsProvider();
+  final usersProvider = new UsersProvider();
   String _email = "";
+  List<String> favs = [];
+  List<CatModel> cats = [];
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +23,26 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gatos (adopter)"),
+        title: Text("Favoritos"),
       ),
       body:
-      _createList(),
+      _createList(_readFavs()),
       bottomNavigationBar: _createBottomBar(),
     );
   }
 
-  Widget _createList() {
+  Future<List<String>> _readFavs() async {
+    var users = await usersProvider.readUsers();
+    var usersMap = Map.fromIterable(users, key: (e) => e.email, value: (e) => e.favs);
+    favs = usersMap[_email];
+    print("FAVS - " + favs.toString());
+    return favs;
+  }
+
+  Widget _createList(Future<List<String>> favs) {
+    _readFavs();
     return FutureBuilder(
-      future: catsProvider.readCats(),
+      future: catsProvider.searchCatsByIds(favs),
       builder: (BuildContext context, AsyncSnapshot<List<CatModel>> snapshot) {
         if (snapshot.hasData) {
           final cats = snapshot.data;
@@ -112,9 +125,9 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          IconButton(icon: Icon(Icons.home, color: Colors.white)),
+          IconButton(icon: Icon(Icons.home, color: Colors.white), onPressed: () => Navigator.pushReplacementNamed(context, "adopterHome", arguments: _email)),
           Text("|", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.w100)),
-          IconButton(icon: Icon(Icons.favorite, color: Colors.white), onPressed: () => Navigator.pushReplacementNamed(context, "favorites", arguments: _email)),
+          IconButton(icon: Icon(Icons.favorite, color: Colors.white)),
         ],
       ),
     );
