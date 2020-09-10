@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_open_whatsapp/flutter_open_whatsapp.dart';
 
 class CatDetailsPage extends StatelessWidget {
 
@@ -44,22 +45,7 @@ class CatDetailsPage extends StatelessWidget {
               children: <Widget>[
                 _showPic(),
                 SizedBox(height: 20.0),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(cat.phone, style: TextStyle(fontSize: 16.5)),
-                      SizedBox(width: 10.0),
-                      InkWell(
-                        onTap: () {
-                          //TODO: launch WhatsApp
-                        },
-                        child:
-                          Image(image: AssetImage('assets/whatsapp-icon.png'),
-                          height: 20.0,
-                        ),
-                      )
-                    ]
-                ),
+                _createPhone(),
                 SizedBox(height: 20.0),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -98,6 +84,31 @@ class CatDetailsPage extends StatelessWidget {
         );
       }
       return Image.asset('assets/no-image.png');
+    }
+  }
+
+  Widget _createPhone() {
+    if ( cat.phone != null ) {
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Text(cat.phone, style: TextStyle(fontSize: 16.5)),
+            SizedBox(width: 10.0),
+            InkWell(
+              onTap: () {
+                FlutterOpenWhatsapp.sendSingleMessage("+34" + cat.phone,
+                    "¡Hola! Me interesa el gato ${cat
+                        .name} que tienes en adopción.");
+              },
+              child:
+              Image(image: AssetImage('assets/whatsapp-icon.png'),
+                height: 20.0,
+              ),
+            )
+          ]
+      );
+    } else {
+      return Container();
     }
   }
 

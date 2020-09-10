@@ -32,6 +32,7 @@ dependencies:
   image_picker:
   mime_type:
   shared_preferences:
+  flutter_open_whatsapp:
 
 dev_dependencies:
   flutter_test:
