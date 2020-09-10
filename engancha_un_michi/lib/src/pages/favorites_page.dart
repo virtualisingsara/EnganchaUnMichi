@@ -13,6 +13,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   final catsProvider = new CatsProvider();
   final usersProvider = new UsersProvider();
   String _email = "";
+  List<CatModel> _initialData = [];
   List<String> favs = [];
   List<CatModel> cats = [];
 
@@ -43,6 +44,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     _readFavs();
     return FutureBuilder(
       future: catsProvider.searchCatsByIds(favs),
+      initialData: _initialData,
       builder: (BuildContext context, AsyncSnapshot<List<CatModel>> snapshot) {
         if (snapshot.hasData) {
           final cats = snapshot.data;

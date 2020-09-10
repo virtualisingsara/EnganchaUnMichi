@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 class GiverHomePage extends StatelessWidget {
 
   final catsProvider = new CatsProvider();
+  List<CatModel> _initialData = [];
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gatos (giver)"),
+        automaticallyImplyLeading: false,
       ),
       body:
       _createList(),
@@ -21,6 +23,7 @@ class GiverHomePage extends StatelessWidget {
   Widget _createList() {
     return FutureBuilder(
       future: catsProvider.readCats(),
+      initialData: _initialData,
       builder: (BuildContext context, AsyncSnapshot<List<CatModel>> snapshot) {
         if (snapshot.hasData) {
           final cats = snapshot.data;

@@ -11,6 +11,7 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
 
   final catsProvider = new CatsProvider();
   String _email = "";
+  List<CatModel> _initialData = [];
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
   Widget _createList() {
     return FutureBuilder(
       future: catsProvider.readCats(),
+      initialData: _initialData,
       builder: (BuildContext context, AsyncSnapshot<List<CatModel>> snapshot) {
         if (snapshot.hasData) {
           final cats = snapshot.data;
