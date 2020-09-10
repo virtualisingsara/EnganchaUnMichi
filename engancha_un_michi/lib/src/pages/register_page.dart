@@ -13,7 +13,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final usersProvider = new UsersProvider();
   String _email;
   String _password;
+  String _phone;
   String _selectedOption = "adopter";
+  bool _isVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 _createEmail(),
                 SizedBox(height: 10.0),
                 _createPassword(),
+                SizedBox(height: 10.0),
+                _createPhone(),
                 SizedBox(height: 30.0),
                 _createTypeAccount(),
                 SizedBox(height: 30.0),
@@ -111,6 +115,26 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  Widget _createPhone() {
+    return Visibility(
+        visible: _isVisible,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          child: TextField(
+            obscureText: true,
+            keyboardType: TextInputType.phone,
+            decoration: InputDecoration(
+              icon: Icon(Icons.lock_outline, color: Colors.deepPurple,),
+              labelText: "Teléfono"
+            ),
+            onChanged: (value) => setState(() {
+               _phone = value;
+            })
+          ),
+        )
+    );
+  }
+
   Widget _createTypeAccount() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -127,6 +151,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 onChanged: (opt) {
                   setState(() {
                     _selectedOption = opt;
+                    if ( _selectedOption == "giver" ) {
+                      _isVisible = true;
+                    } else {
+                      _isVisible = false;
+                    }
                   });
                 },
               )
@@ -187,18 +216,23 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _register(BuildContext context) async {
-    Map info = await usersProvider.register(_email, _password);
-    if ( info['ok'] ) {
-      user.email = _email;
-      user.accountType = _selectedOption;
-      usersProvider.createUser(user);
-      if ( _selectedOption == "giver" ) {
-        Navigator.pushReplacementNamed(context, "giverHome");
-      } else {
-        Navigator.pushReplacementNamed(context, "adopterHome");
-      }
+    if ( _phone == null || _phone == "" || int.tryParse(_phone) == false) {
+      _showAlert(context, "Introduzca el teléfono");
     } else {
-      _showAlert(context, info['message']);
+      Map info = await usersProvider.register(_email, _password);
+      if (info['ok']) {
+        user.email = _email;
+        user.accountType = _selectedOption;
+        user.phone = _phone;
+        usersProvider.createUser(user);
+        if (_selectedOption == "giver") {
+          Navigator.pushReplacementNamed(context, "giverHome");
+        } else {
+          Navigator.pushReplacementNamed(context, "adopterHome");
+        }
+      } else {
+        _showAlert(context, info['message']);
+      }
     }
   }
 

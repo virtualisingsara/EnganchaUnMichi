@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:enganchaunmichi/src/providers/cats_provider.dart';
+import 'package:enganchaunmichi/src/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,9 +17,11 @@ class _AddCatPageState extends State<AddCatPage> {
 
   CatModel cat = new CatModel();
   final catsProvider = new CatsProvider();
+  final usersProvider = new UsersProvider();
   final _picker = ImagePicker();
   File pic;
 
+  String _email = "";
   String _selectedOption = "Macho";
   String _barTitle = "Añadir gato";
   String _button = "GUARDAR";
@@ -27,7 +30,10 @@ class _AddCatPageState extends State<AddCatPage> {
   @override
   Widget build(BuildContext context) {
 
-    final CatModel catData = ModalRoute.of(context).settings.arguments;
+    final args = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final CatModel catData = args["cat"];
+    _email = args["email"];
+
     if (catData != null) {
       cat = catData;
       _selectedOption = cat.gender;
@@ -84,7 +90,7 @@ class _AddCatPageState extends State<AddCatPage> {
       initialValue: cat.name,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        labelText: "Nombre"
+          labelText: "Nombre"
       ),
       onSaved: (value) => cat.name = value,
     );
@@ -113,10 +119,10 @@ class _AddCatPageState extends State<AddCatPage> {
 
   List<DropdownMenuItem<String>> getOptionsDropdown() {
     List<DropdownMenuItem<String>> list = new List();
-      list.add(DropdownMenuItem(
-          child: Text("Macho"),
-          value: "Macho"
-      ));
+    list.add(DropdownMenuItem(
+        child: Text("Macho"),
+        value: "Macho"
+    ));
     list.add(DropdownMenuItem(
         child: Text("Hembra"),
         value: "Hembra"
@@ -176,7 +182,7 @@ class _AddCatPageState extends State<AddCatPage> {
             child: Text("BORRAR"),
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0)
+              borderRadius: BorderRadius.circular(5.0)
           ),
           color: Colors.red,
           textColor: Colors.white,
@@ -197,6 +203,14 @@ class _AddCatPageState extends State<AddCatPage> {
       cat.pictureUrl = await catsProvider.uploadImage(pic);
     }
 
+    print("EMAIL - " + _email.toString());
+
+    var users = await usersProvider.readUsers();
+    var usersMap = Map.fromIterable(users, key: (e) => e.email, value: (e) => e.phone);
+    cat.phone = await usersMap[_email];
+
+    print("PHONE - " + cat.phone.toString());
+
     if (cat.id == null) {
       catsProvider.createCat(cat);
     } else {
@@ -204,7 +218,7 @@ class _AddCatPageState extends State<AddCatPage> {
     }
 
     showSnackbar("Gato guardado con éxito.");
-    Navigator.pushReplacementNamed(context, "giverHome");
+    Navigator.pushReplacementNamed(context, "giverHome", arguments: _email);
   }
 
   void showSnackbar(String msg) {

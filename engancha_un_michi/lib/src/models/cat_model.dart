@@ -16,6 +16,7 @@ class CatModel {
     this.age = 0,
     this.desc = "",
     this.pictureUrl,
+    this.phone = "",
   });
 
   String id;
@@ -24,6 +25,7 @@ class CatModel {
   int age;
   String desc;
   String pictureUrl;
+  String phone;
 
   factory CatModel.fromJson(Map<String, dynamic> json) => CatModel(
     id: json["id"],
@@ -32,6 +34,7 @@ class CatModel {
     age: json["age"],
     desc: json["desc"],
     pictureUrl: json["pictureURL"],
+    phone: json["phone"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +44,6 @@ class CatModel {
     "age": age,
     "desc": desc,
     "pictureURL": pictureUrl,
+    "phone": phone,
   };
 }

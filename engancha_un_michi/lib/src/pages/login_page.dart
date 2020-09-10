@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
       var usersMap = Map.fromIterable(users, key: (e) => e.email, value: (e) => e.accountType);
       var accountType = usersMap[_email];
       if ( accountType == "giver" ) {
-        Navigator.pushReplacementNamed(context, "giverHome");
+        Navigator.pushReplacementNamed(context, "giverHome", arguments: _email);
       } else {
         Navigator.pushReplacementNamed(context, "adopterHome", arguments: _email);
       }

@@ -84,4 +84,28 @@ class UsersProvider {
     return users;
   }
 
+  Future<UserModel> searchUserById(String id) async {
+    final url = '$_url/users/$id.json';
+    final response = await http.get(url);
+    final Map<String, dynamic> decodedData = json.decode(response.body);
+
+    if (decodedData == null) return new UserModel();
+
+    UserModel user = UserModel.fromJson(decodedData);
+
+    print("SEARCH USER - " + user.toString());
+
+    return user;
+  }
+
+  Future<bool> updateUser(UserModel user) async {
+    final url = '$_url/users/${user.id}.json';
+    final response = await http.put(url, body: userModelToJson(user));
+    final decodedData = json.decode(response.body);
+
+    print(decodedData);
+
+    return true;
+  }
+
 }

@@ -43,16 +43,33 @@ class CatDetailsPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 _showPic(),
-                SizedBox(height: 30.0),
+                SizedBox(height: 20.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Sexo:   " + cat.gender, style: TextStyle(fontSize: 16.5)),
-                    SizedBox(width: 50.0),
-                    Text("Edad:   " + cat.age.toString(), style: TextStyle(fontSize: 16.5)),
-                  ]
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(cat.phone, style: TextStyle(fontSize: 16.5)),
+                      SizedBox(width: 10.0),
+                      InkWell(
+                        onTap: () {
+                          //TODO: launch WhatsApp
+                        },
+                        child:
+                          Image(image: AssetImage('assets/whatsapp-icon.png'),
+                          height: 20.0,
+                        ),
+                      )
+                    ]
                 ),
-                SizedBox(height: 30.0),
+                SizedBox(height: 20.0),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(cat.gender, style: TextStyle(fontSize: 16.5)),
+                      SizedBox(width: 50.0),
+                      Text("Edad:   " + cat.age.toString(), style: TextStyle(fontSize: 16.5)),
+                    ]
+                ),
+                SizedBox(height: 20.0),
                 Container(
                   child: Text(cat.desc),
                 ),

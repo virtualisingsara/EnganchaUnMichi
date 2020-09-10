@@ -2,13 +2,23 @@ import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:enganchaunmichi/src/providers/cats_provider.dart';
 import 'package:flutter/material.dart';
 
-class GiverHomePage extends StatelessWidget {
+class GiverHomePage extends StatefulWidget {
+  @override
+  _GiverHomePageState createState() => _GiverHomePageState();
+}
+
+class _GiverHomePageState extends State<GiverHomePage> {
 
   final catsProvider = new CatsProvider();
+  String _email = "";
   List<CatModel> _initialData = [];
-  
+
   @override
   Widget build(BuildContext context) {
+
+    _email = ModalRoute.of(context).settings.arguments;
+    print("email - " + _email.toString());
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Gatos (giver)"),
@@ -42,23 +52,25 @@ class GiverHomePage extends StatelessWidget {
 
   Widget _createItem(BuildContext context, CatModel cat) {
     final card = InkWell(
-        onTap: () => Navigator.pushNamed(context, "add_cat", arguments: cat),
+        onTap: () => Navigator.pushNamed(context, "add_cat", arguments: <String, dynamic>{
+          "cat" : cat,
+          "email" : _email},),
         child: Container(
           color: Colors.deepPurple,
           child: Column(
             children: <Widget>[
               (cat.pictureUrl == null)
                   ? Image(image: AssetImage('assets/no-image.png'),
-                    height: 100.0,
-                    width: double.infinity,
-                    fit: BoxFit.cover,)
+                height: 100.0,
+                width: double.infinity,
+                fit: BoxFit.cover,)
                   : FadeInImage(
-                    image: NetworkImage(cat.pictureUrl),
-                    placeholder: AssetImage('assets/loading.gif'),
-                    fadeInDuration: Duration(milliseconds: 200),
-                    height: 100.0,
-                    width: double.infinity,
-                    fit: BoxFit.cover
+                  image: NetworkImage(cat.pictureUrl),
+                  placeholder: AssetImage('assets/loading.gif'),
+                  fadeInDuration: Duration(milliseconds: 200),
+                  height: 100.0,
+                  width: double.infinity,
+                  fit: BoxFit.cover
               ),
               Container(
                 padding: EdgeInsets.all(5.0),
@@ -101,7 +113,8 @@ class GiverHomePage extends StatelessWidget {
     return FloatingActionButton(
       child: Icon(Icons.add),
       backgroundColor: Colors.deepPurple,
-      onPressed: () => Navigator.pushNamed(context, "add_cat"),
+      onPressed: () => Navigator.pushNamed(context, "add_cat", arguments: <String, dynamic>{
+        "email" : _email}),
     );
   }
 
