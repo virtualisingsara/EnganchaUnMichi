@@ -56,7 +56,7 @@ class _GiverHomePageState extends State<GiverHomePage> {
           "cat" : cat,
           "email" : _email},),
         child: Container(
-          color: Colors.deepPurple,
+          color: Color(0xFF957DAD),
           child: Column(
             children: <Widget>[
               (cat.pictureUrl == null)
@@ -111,8 +111,8 @@ class _GiverHomePageState extends State<GiverHomePage> {
 
   _createButton(BuildContext context) {
     return FloatingActionButton(
-      child: Icon(Icons.add),
-      backgroundColor: Colors.deepPurple,
+      child: Icon(Icons.add, color: Colors.white),
+      backgroundColor: Color(0xFF957DAD),
       onPressed: () => Navigator.pushNamed(context, "add_cat", arguments: <String, dynamic>{
         "email" : _email}),
     );

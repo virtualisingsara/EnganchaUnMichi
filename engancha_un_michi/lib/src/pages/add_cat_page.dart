@@ -167,7 +167,7 @@ class _AddCatPageState extends State<AddCatPage> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0)
       ),
-      color: Colors.deepPurple,
+      color: Color(0xFF957DAD),
       textColor: Colors.white,
       onPressed: () => _submit(),
     );

@@ -65,7 +65,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     final card = InkWell(
         onTap: () => Navigator.pushNamed(context, "cat_details", arguments: cat),
         child: Container(
-          color: Colors.deepPurple,
+          color: Color(0xFF957DAD),
           child: Column(
             children: <Widget>[
               (cat.pictureUrl == null)
@@ -120,7 +120,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   Widget _createBottomBar() {
     return BottomAppBar(
-      color: Colors.deepPurple,
+      color: Color(0xFF957DAD),
       shape: CircularNotchedRectangle(),
       notchMargin: 4.0,
       child: new Row(

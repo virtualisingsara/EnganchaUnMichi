@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           FlatButton(
-            child: Text("Registrarse", style: TextStyle(color: Colors.deepPurple)),
+            child: Text("Registrarse", style: TextStyle(color: Color(0xFF957DAD))),
             onPressed: () => Navigator.pushReplacementNamed(context, "register"),
           ),
           SizedBox(height: 100.0)
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
       child: TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          icon: Icon(Icons.alternate_email, color: Colors.deepPurple,),
+          icon: Icon(Icons.alternate_email, color: Color(0xFF957DAD)),
           hintText: "ejemplo@email.com",
           labelText: "Email"
         ),
@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
         obscureText: true,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-            icon: Icon(Icons.lock_outline, color: Colors.deepPurple,),
+            icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
             labelText: "Contraseña"
         ),
           onChanged: (value) => setState(() {
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5.0)
       ),
-      color: Colors.deepPurple,
+      color: Color(0xFF957DAD),
       textColor: Colors.white,
       onPressed: () => _login(context),
     );
@@ -126,17 +126,19 @@ class _LoginPageState extends State<LoginPage> {
     final background = Container(
       height: size.height * 0.4,
       width: double.infinity,
-      color: Colors.deepPurple,
+      color: Color(0xFF957DAD),
     );
 
     return Stack(
       children: <Widget>[
         background,
+        SizedBox(height: size.height * 0.2),
         Align(
           alignment: Alignment.topCenter,
-          child: Image(
-            image: NetworkImage("https://i.pinimg.com/originals/4e/40/dd/4e40ddd11beb9ba671a0b59948861afb.png"),
-            width: size.width * 0.6,
+          child:
+              Image(
+              image: AssetImage('assets/logo.png'),
+              height: size.height * 0.35,
           ),
         )
       ],

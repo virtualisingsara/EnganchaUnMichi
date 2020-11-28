@@ -7,8 +7,13 @@ import 'package:enganchaunmichi/src/pages/login_page.dart';
 import 'package:enganchaunmichi/src/pages/register_page.dart';
 import 'package:enganchaunmichi/src/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
+  SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+  ));
   runApp(MyApp());
   final prefs = new UserPreferences();
   await prefs.initPrefs();
@@ -19,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Material App",
+      title: "Engancha un Michi",
       initialRoute: "login",
       routes: {
         "login" : (BuildContext context) => LoginPage(),
@@ -31,7 +36,8 @@ class MyApp extends StatelessWidget {
         "add_cat" : (BuildContext context) => AddCatPage(),
       },
       theme: ThemeData(
-        primaryColor: Colors.deepPurple,
+        primaryColor: Color(0xFF957DAD),
+        accentColor: Color(0xFF95aD7D),
       ),
     );
   }
