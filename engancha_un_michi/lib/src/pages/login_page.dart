@@ -15,12 +15,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          _createBackground(context),
-          _loginForm(context),
-        ],
-      )
+        body: Stack(
+          children: <Widget>[
+            _createBackground(context),
+            _loginForm(context),
+          ],
+        )
     );
   }
 
@@ -39,16 +39,16 @@ class _LoginPageState extends State<LoginPage> {
             margin: EdgeInsets.only(bottom: 10.0),
             padding: EdgeInsets.symmetric(vertical: 50.0),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5.0),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 3.0,
-                  offset: Offset(0.0, 5.0),
-                  spreadRadius: 3.0
-                )
-              ]
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 3.0,
+                      offset: Offset(0.0, 5.0),
+                      spreadRadius: 3.0
+                  )
+                ]
             ),
             child: Column(
               children: <Widget>[
@@ -76,12 +76,12 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          icon: Icon(Icons.alternate_email, color: Color(0xFF957DAD)),
-          hintText: "ejemplo@email.com",
-          labelText: "Email"
-        ),
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              icon: Icon(Icons.alternate_email, color: Color(0xFF957DAD)),
+              hintText: "ejemplo@email.com",
+              labelText: "Email"
+          ),
           onChanged: (value) => setState(() {
             _email = value;
           })
@@ -93,12 +93,12 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
-        obscureText: true,
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
-            labelText: "Contraseña"
-        ),
+          obscureText: true,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
+              labelText: "Contraseña"
+          ),
           onChanged: (value) => setState(() {
             _password = value;
           })
@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Text("Entrar"),
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0)
+          borderRadius: BorderRadius.circular(5.0)
       ),
       color: Color(0xFF957DAD),
       textColor: Colors.white,
@@ -136,9 +136,9 @@ class _LoginPageState extends State<LoginPage> {
         Align(
           alignment: Alignment.topCenter,
           child:
-              Image(
-              image: AssetImage('assets/logo.png'),
-              height: size.height * 0.35,
+          Image(
+            image: AssetImage('assets/logo.png'),
+            height: size.height * 0.35,
           ),
         )
       ],
@@ -163,22 +163,22 @@ class _LoginPageState extends State<LoginPage> {
 
   _showAlert(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Error", style: TextStyle(color: Colors.red)),
-          content: Text("El usuario y/o la contraseña son incorrectos", style: TextStyle(color: Colors.red)),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          ],
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-        );
-      }
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Error", style: TextStyle(color: Colors.red)),
+            content: Text("El usuario y/o la contraseña son incorrectos", style: TextStyle(color: Colors.red)),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+          );
+        }
     );
   }
 

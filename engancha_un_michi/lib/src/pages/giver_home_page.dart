@@ -1,5 +1,6 @@
 import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:enganchaunmichi/src/providers/cats_provider.dart';
+import 'package:enganchaunmichi/src/providers/users_provider.dart';
 import 'package:flutter/material.dart';
 
 class GiverHomePage extends StatefulWidget {
@@ -10,8 +11,11 @@ class GiverHomePage extends StatefulWidget {
 class _GiverHomePageState extends State<GiverHomePage> {
 
   final catsProvider = new CatsProvider();
+  final usersProvider = new UsersProvider();
   String _email = "";
+  String _phone = "";
   List<CatModel> _initialData = [];
+  List<String> mine = [];
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +29,44 @@ class _GiverHomePageState extends State<GiverHomePage> {
         automaticallyImplyLeading: false,
       ),
       body:
-      _createList(),
+      _createList(_myCats()),
       floatingActionButton: _createButton(context),
     );
   }
 
-  Widget _createList() {
+  Future<String> _readPhone() async {
+    var users = await usersProvider.readUsers();
+    var usersMap = Map.fromIterable(users, key: (e) => e.email, value: (e) => e.phone);
+    _phone = usersMap[_email];
+    print("PHONE - " + _phone.toString());
+    return _phone;
+  }
+
+  Future<List<String>> _myCats() async {
+    await _readPhone();
+    mine = [];
+    var cats = await catsProvider.readCats();
+    print("CATS - " + cats.toString());
+    var catsMap = Map.fromIterable(cats, key: (e) => e.id, value: (e) => e.phone);
+    print("MY CATS - " + catsMap.toString());
+    List keys = catsMap.keys.toList();
+    print("KEYS - " + keys.toString());
+    List values = catsMap.values.toList();
+    print("VALUES - " + values.toString());
+    for (var i = 0; i < values.length; i++) {
+      if (values[i] == _phone) {
+        print("ADD - " + keys[i].toString());
+        mine.add(keys[i]);
+      }
+    }
+    print("MY CATS ID - " + mine.toString());
+    return mine;
+  }
+
+  Widget _createList(Future<List<String>> mine) {
+    print("MINE - " + mine.toString());
     return FutureBuilder(
-      future: catsProvider.readCats(),
+      future: catsProvider.searchCatsByIds(mine),
       initialData: _initialData,
       builder: (BuildContext context, AsyncSnapshot<List<CatModel>> snapshot) {
         if (snapshot.hasData) {

@@ -10,7 +10,7 @@ String catModelToJson(CatModel data) => json.encode(data.toJson());
 
 class CatModel {
   CatModel({
-    this.id,
+    this.id = "",
     this.name = "",
     this.gender = "Macho",
     this.age = 0,
@@ -38,7 +38,7 @@ class CatModel {
   );
 
   Map<String, dynamic> toJson() => {
-    //"id": id,
+    "id": id,
     "name": name,
     "gender": gender,
     "age": age,

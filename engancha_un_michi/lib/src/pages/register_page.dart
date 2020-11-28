@@ -20,12 +20,12 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          _createBackground(context),
-          _loginForm(context),
-        ],
-      )
+        body: Stack(
+          children: <Widget>[
+            _createBackground(context),
+            _loginForm(context),
+          ],
+        )
     );
   }
 
@@ -44,16 +44,16 @@ class _RegisterPageState extends State<RegisterPage> {
             margin: EdgeInsets.only(bottom: 10.0),
             padding: EdgeInsets.symmetric(vertical: 50.0),
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5.0),
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 3.0,
-                  offset: Offset(0.0, 5.0),
-                  spreadRadius: 3.0
-                )
-              ]
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5.0),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 3.0,
+                      offset: Offset(0.0, 5.0),
+                      spreadRadius: 3.0
+                  )
+                ]
             ),
             child: Column(
               children: <Widget>[
@@ -85,12 +85,12 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          icon: Icon(Icons.alternate_email, color: Color(0xFF957DAD)),
-          hintText: "ejemplo@email.com",
-          labelText: "Email"
-        ),
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              icon: Icon(Icons.alternate_email, color: Color(0xFF957DAD)),
+              hintText: "ejemplo@email.com",
+              labelText: "Email"
+          ),
           onChanged: (value) => setState(() {
             _email = value;
           })
@@ -102,12 +102,12 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
-        obscureText: true,
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-            icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
-            labelText: "Contraseña"
-        ),
+          obscureText: true,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
+              labelText: "Contraseña"
+          ),
           onChanged: (value) => setState(() {
             _password = value;
           })
@@ -121,15 +121,15 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 20.0),
           child: TextField(
-            obscureText: true,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
-              labelText: "Teléfono"
-            ),
-            onChanged: (value) => setState(() {
-               _phone = value;
-            })
+              obscureText: true,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                  icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
+                  labelText: "Teléfono"
+              ),
+              onChanged: (value) => setState(() {
+                _phone = value;
+              })
           ),
         )
     );
@@ -137,31 +137,31 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _createTypeAccount() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      height: 70.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text("Tipo de cuenta", style: TextStyle(fontSize: 16.5, color: Color.fromRGBO(104, 104, 104, 1))),
-          SizedBox(width: 30.0),
-          Expanded(
-              child: DropdownButton(
-                value: _selectedOption,
-                items: getOptionsDropdown(),
-                onChanged: (opt) {
-                  setState(() {
-                    _selectedOption = opt;
-                    if ( _selectedOption == "giver" ) {
-                      _isVisible = true;
-                    } else {
-                      _isVisible = false;
-                    }
-                  });
-                },
-              )
-          )
-        ],
-      )
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
+        height: 70.0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("Tipo de cuenta", style: TextStyle(fontSize: 16.5, color: Color.fromRGBO(104, 104, 104, 1))),
+            SizedBox(width: 30.0),
+            Expanded(
+                child: DropdownButton(
+                  value: _selectedOption,
+                  items: getOptionsDropdown(),
+                  onChanged: (opt) {
+                    setState(() {
+                      _selectedOption = opt;
+                      if ( _selectedOption == "giver" ) {
+                        _isVisible = true;
+                      } else {
+                        _isVisible = false;
+                      }
+                    });
+                  },
+                )
+            )
+          ],
+        )
     );
   }
 
@@ -185,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Text("Entrar"),
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0)
+          borderRadius: BorderRadius.circular(5.0)
       ),
       color: Color(0xFF957DAD),
       textColor: Colors.white,
@@ -218,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _register(BuildContext context) async {
-    if ( _phone == null || _phone == "" || int.tryParse(_phone) == false) {
+    if ( (_phone == null || _phone == "" || int.tryParse(_phone) == false) && _selectedOption == "giver") {
       _showAlert(context, "Introduzca el teléfono");
     } else {
       Map info = await usersProvider.register(_email, _password);
@@ -227,11 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
         user.accountType = _selectedOption;
         user.phone = _phone;
         usersProvider.createUser(user);
-        if (_selectedOption == "giver") {
-          Navigator.pushReplacementNamed(context, "giverHome");
-        } else {
-          Navigator.pushReplacementNamed(context, "adopterHome");
-        }
+        Navigator.pushReplacementNamed(context, "login");
       } else {
         _showAlert(context, info['message']);
       }
