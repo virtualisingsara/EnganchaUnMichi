@@ -20,7 +20,7 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gatos (adopter)"),
+        title: Text("Gatos"),
       ),
       body:
       _createList(),

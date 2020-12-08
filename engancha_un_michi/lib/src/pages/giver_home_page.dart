@@ -25,7 +25,7 @@ class _GiverHomePageState extends State<GiverHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Gatos (giver)"),
+        title: Text("Mis gatos"),
         automaticallyImplyLeading: false,
       ),
       body:
