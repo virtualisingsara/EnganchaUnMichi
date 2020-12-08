@@ -21,6 +21,12 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gatos"),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: _logout,
+            ),
+          ]
       ),
       body:
       _createList(),
@@ -120,6 +126,10 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
         ],
       ),
     );
+  }
+
+  _logout() {
+    Navigator.pushReplacementNamed(context, "login");
   }
 
 }

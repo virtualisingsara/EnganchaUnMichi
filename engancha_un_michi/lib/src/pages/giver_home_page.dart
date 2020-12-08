@@ -27,6 +27,12 @@ class _GiverHomePageState extends State<GiverHomePage> {
       appBar: AppBar(
         title: Text("Mis gatos"),
         automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: _logout,
+            ),
+          ]
       ),
       body:
       _createList(_myCats()),
@@ -150,6 +156,10 @@ class _GiverHomePageState extends State<GiverHomePage> {
       onPressed: () => Navigator.pushNamed(context, "add_cat", arguments: <String, dynamic>{
         "email" : _email}),
     );
+  }
+
+  _logout() {
+    Navigator.pushReplacementNamed(context, "login");
   }
 
 }

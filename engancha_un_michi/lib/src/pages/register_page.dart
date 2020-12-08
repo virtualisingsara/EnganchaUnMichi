@@ -16,6 +16,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String _phone;
   String _selectedOption = "adopter";
   bool _isVisible = false;
+  bool _permission = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +65,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 _createPassword(),
                 SizedBox(height: 10.0),
                 _createPhone(),
+                SizedBox(height: 30.0),
+                _createPermission(),
                 SizedBox(height: 30.0),
                 _createTypeAccount(),
                 SizedBox(height: 30.0),
@@ -132,6 +135,20 @@ class _RegisterPageState extends State<RegisterPage> {
               })
           ),
         )
+    );
+  }
+
+  Widget _createPermission() {
+    return Visibility(
+        visible: _isVisible,
+        child: CheckboxListTile(
+          title: Text("Autorizo a mostrar mi teléfono a posibles adoptantes"),
+          value: _permission,
+          onChanged: (value) => setState(() {
+            _permission = value;
+          }),
+          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+        ),
     );
   }
 
@@ -219,7 +236,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _register(BuildContext context) async {
     if ( (_phone == null || _phone == "" || int.tryParse(_phone) == false) && _selectedOption == "giver") {
-      _showAlert(context, "Introduzca el teléfono");
+      _showAlert(context, "Es necesario introducir el teléfono");
+    } else if (_permission == false && _selectedOption == "giver"){
+      _showAlert(context, "Es necesario aceptar el permiso");
     } else {
       Map info = await usersProvider.register(_email, _password);
       if (info['ok']) {
