@@ -189,7 +189,7 @@ class _AddCatPageState extends State<AddCatPage> {
           onPressed: () {
             catsProvider.deleteCat(cat.id);
             showSnackbar("Gato borrado con éxito.");
-            Navigator.pushReplacementNamed(context, "giverHome");
+            Navigator.pushReplacementNamed(context, "giverHome", arguments: _email);
           },
         )
     );
