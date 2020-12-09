@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
@@ -9,9 +10,17 @@ import 'package:enganchaunmichi/src/models/cat_model.dart';
 class CatsProvider {
   final String _url = 'https://engancha-un-michi.firebaseio.com';
 
+  String _getRandomId() {
+    var random = Random.secure();
+    var values = List<int>.generate(32, (i) => random.nextInt(256));
+    return base64Url.encode(values);
+  }
+
   Future<bool> createCat(CatModel cat) async {
-    final url = '$_url/cats.json';
-    final response = await http.post(url, body: catModelToJson(cat));
+    cat.id = _getRandomId();
+    var id = cat.id;
+    final url = '$_url/cats/$id.json';
+    final response = await http.put(url, body: catModelToJson(cat));
     final decodedData = json.decode(response.body);
 
     print(decodedData);
