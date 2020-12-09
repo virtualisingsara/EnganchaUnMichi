@@ -62,6 +62,18 @@ class CatsProvider {
     return cats;
   }
 
+  Future<List<CatModel>> searchCats(List<String> idList) async{
+    final List<String> ids = await idList;
+    final List<CatModel> cats = new List();
+    for (var i = 0; i < ids.length; i++) {
+      cats.add(await searchCatById(ids[i]));
+    }
+
+    print("SEARCH CATS - " + cats.toString());
+
+    return cats;
+  }
+
   Future<bool> updateCat(CatModel cat) async {
     final url = '$_url/cats/${cat.id}.json';
     final response = await http.put(url, body: catModelToJson(cat));

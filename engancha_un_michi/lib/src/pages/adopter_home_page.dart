@@ -21,6 +21,7 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Gatos"),
+          automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.logout),
@@ -56,7 +57,10 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
 
   Widget _createItem(BuildContext context, CatModel cat) {
     final card = InkWell(
-        onTap: () => Navigator.pushNamed(context, "cat_details", arguments: cat),
+        onTap: () => Navigator.pushNamed(context, "cat_details", arguments: Arguments(
+          cat,
+          "adopterHome",
+        )),
         child: Container(
           color: Color(0xFF957DAD),
           child: Column(
@@ -132,4 +136,11 @@ class _AdopterHomePageState extends State<AdopterHomePage> {
     Navigator.pushReplacementNamed(context, "login");
   }
 
+}
+
+class Arguments {
+  final CatModel cat;
+  final String id;
+
+  Arguments(this.cat, this.id);
 }

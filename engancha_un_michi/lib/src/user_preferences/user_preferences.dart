@@ -35,5 +35,14 @@ class UserPreferences {
     _prefs.setString('lastPage', value);
   }
 
+  // GET y SET de la lista de favoritos
+  get favs {
+    return _prefs.getStringList("favs") ?? []; // Si no existe, retorna []
+  }
+
+  set favs(List<String> value){
+    _prefs.setStringList("favs", value);
+  }
+
 }
 

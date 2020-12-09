@@ -1,7 +1,10 @@
 import 'package:enganchaunmichi/src/models/cat_model.dart';
 import 'package:enganchaunmichi/src/providers/cats_provider.dart';
 import 'package:enganchaunmichi/src/providers/users_provider.dart';
+import 'package:enganchaunmichi/src/user_preferences/user_preferences.dart';
 import 'package:flutter/material.dart';
+
+import 'adopter_home_page.dart';
 
 class FavoritesPage extends StatefulWidget {
   @override
@@ -16,6 +19,9 @@ class _FavoritesPageState extends State<FavoritesPage> {
   List<CatModel> _initialData = [];
   List<String> favs = [];
   List<CatModel> cats = [];
+  List<dynamic> myFavs = [];
+
+  final prefs = new UserPreferences();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +31,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Favoritos"),
+        automaticallyImplyLeading: false,
       ),
       body:
       _createList(_readFavs()),
@@ -32,11 +39,18 @@ class _FavoritesPageState extends State<FavoritesPage> {
     );
   }
 
-  Future<List<String>> _readFavs() async {
+  /*Future<List<String>> _readFavs() async {
     var users = await usersProvider.readUsers();
     var usersMap = Map.fromIterable(users, key: (e) => e.email, value: (e) => e.favs);
     favs = usersMap[_email];
     print("FAVS - " + favs.toString());
+    return favs;
+  }*/
+
+  Future<List<String>> _readFavs() async {
+    myFavs = prefs.favs;
+    favs = myFavs.cast<String>().toList();
+    print("FAVS" + favs.toString());
     return favs;
   }
 
@@ -63,7 +77,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   Widget _createItem(BuildContext context, CatModel cat) {
     final card = InkWell(
-        onTap: () => Navigator.pushNamed(context, "cat_details", arguments: cat),
+        onTap: () => Navigator.pushNamed(context, "cat_details", arguments: Arguments(
+          cat,
+          "favorites",
+        )),
         child: Container(
           color: Color(0xFF957DAD),
           child: Column(

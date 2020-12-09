@@ -14,9 +14,12 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-  runApp(MyApp());
+  // Inicializar las Shared preferences antes de ejecutar la app
+  WidgetsFlutterBinding.ensureInitialized();
   final prefs = new UserPreferences();
   await prefs.initPrefs();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
