@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
               obscureText: true,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                  icon: Icon(Icons.lock_outline, color: Color(0xFF957DAD)),
+                  icon: Icon(Icons.phone, color: Color(0xFF957DAD)),
                   labelText: "Teléfono"
               ),
               onChanged: (value) => setState(() {
